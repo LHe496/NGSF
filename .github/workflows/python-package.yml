@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.8, 3.9, '3.10', 3.11, 3.12, 3.13, 3.14]
     steps:
     - name: Checkout branch being tested
       uses: actions/checkout@v2
@@ -31,8 +31,20 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         echo "::set-output name=dir::$(pip cache dir)"
+    - name: Cache supyfit_bank.zip
+      id: zip-cache
+      uses: actions/cache@v4
+      with:
+        path: ./bank
+        key: supyfit_bank-static
+    - name: Download and extract supyfit_bank.zip
+      if: steps.zip-cache.outputs.cache-hit != 'true'
+      run: |
+        curl -L -H "Content-Type: application/json" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36" -o ./supyfit_bank.zip "https://www.wiserep.org/sites/default/files/supyfit_bank.zip"
+        unzip -q supyfit_bank.zip
+        rm supyfit_bank.zip
     - name: pip cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: ${{ runner.os }}-pip-2-${{ hashFiles('**/setup.py', '**/requirements.txt') }}
