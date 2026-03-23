@@ -8,7 +8,7 @@ from NGSF.params import Parameters, data
 
 
 def JD(mjd):
-    return np.float(mjd) + 2400000.5
+    return np.float64(mjd) + 2400000.5
 
 def list_folders(path):
     if path[-1] != '/':

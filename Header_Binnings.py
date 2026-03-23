@@ -107,7 +107,7 @@ def bin_spectrum(spectrum, resolution):
     if lam[15] - lam[16] > resolution:
         bin_spectra = spectrum
     else:
-        number_of_bins = np.math.floor((lam[-1] - lam[0]) / resolution)
+        number_of_bins = np.floor((lam[-1] - lam[0]) / resolution)
         flux_bin, bin_edge, index = stats.binned_statistic(lam, flux, statistic = 'median', range=(lam.min(), lam.max()), bins = number_of_bins)
         bin_wavelength = [ (bin_edge[i] + bin_edge[i+1]) / 2 for i in range(len(bin_edge)-1) ]
         
@@ -224,7 +224,7 @@ def bin_spectrum_bank(spectrum, resolution):
    
     
     else:
-        number_of_bins = np.math.floor((lam[-1] - lam[0]) / resolution)
+        number_of_bins = np.floor((lam[-1] - lam[0]) / resolution)
         flux_bin, bin_edge, index = stats.binned_statistic(lam, flux, statistic = 'median', range=(lam.min(), lam.max()), bins = number_of_bins)
         bin_wavelength = [ (bin_edge[i] + bin_edge[i+1]) / 2 for i in range(len(bin_edge)-1) ]
      
